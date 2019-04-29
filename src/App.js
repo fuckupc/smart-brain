@@ -126,22 +126,24 @@ const particleOptions = {
   "retina_detect": true
 }
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   /*change user data */
@@ -196,6 +198,7 @@ class App extends Component {
           .then(count => {
             this.setState(Object.assign(this.state.user, {entries: count}))
           })
+          .catch(console.log)
         }
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
@@ -207,6 +210,10 @@ class App extends Component {
   }
 
   onRouteChange = (value) => {
+    /*refresh all data every time click signout button */
+    if(value === "signin" || value === 'register') {
+      this.setState(initialState);
+    }
     this.setState({route: value});
   }
 
