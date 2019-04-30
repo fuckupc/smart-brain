@@ -5,14 +5,10 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import './App.css';
 
-const app = new Clarifai.App({
-  apiKey: '0b0b25a88d84497daa69c019a4e07014'
-});
 
 /*snow background */
 const particleOptions = {
@@ -182,12 +178,18 @@ class App extends Component {
 
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input })
-    app.models
-      .predict("a403429f2ddf4b49b307e318f00e528b", this.state.input)
+    fetch('https://quiet-everglades-37584.herokuapp.com/image', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .then(response => response.json())
       .then(response => {
         /* send user.id to server */
         if(response) {
-          fetch('http://localhost:3000/count', {
+          fetch('https://quiet-everglades-37584.herokuapp.com/count', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

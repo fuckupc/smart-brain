@@ -20,8 +20,7 @@ class Register extends React.Component {
 	}
 
 	onSubmitSignIn = () => {
-		this.setState(this.props.initialState);
-		fetch('http://localhost:3000/register', {
+		fetch('https://quiet-everglades-37584.herokuapp.com/register', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -31,9 +30,9 @@ class Register extends React.Component {
 			})
 		})
 		.then(response => response.json())
-		.then(data => {
-			if(data) {
-				this.props.upDateUser(data);
+		.then(user => {
+			if(user.id) {
+				this.props.upDateUser(user);
 				this.props.onRouteChange('home');
 			}
 		})
